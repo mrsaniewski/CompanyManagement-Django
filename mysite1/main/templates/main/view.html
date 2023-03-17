@@ -1,0 +1,59 @@
+{% extends "main/base.html" %}
+
+{% block title %}
+View
+{% endblock %}
+
+{% block content %}
+
+<style xmlns:display="http://www.w3.org/1999/xhtml">
+  .bg-teal { background: orange; color:white;}
+  .bg-teal:focus { background: green; }
+  .title{font-weight: bold;}
+  .sayhi{font-weight: bold; font-size: 30px;}
+  .points{font-size: 25px;}
+  .complete{align: right;  white-space: nowrap ;}
+</style>
+
+<h1 class="sayhi">Hi, {{ls.name}}</h1>
+<h2 class="points">Your points: {{ls.points}}</h2>
+<h1 align="center">Tasks</h1>
+<form method="post" action="#">
+		{%csrf_token%}
+		{% for item in ls.item_set.all %}
+
+		<ul class="list-group list-group-flush" id="tasks">
+			<li class="list-group-item">
+		    <div class = "title">
+    			{{item.title}}
+			</div>
+				<br/>
+				{{item.text}}
+				<br/>
+				{{item.date}}
+				<div class="complete">
+					<p>Complete:</p>
+					{% if item.complete == True %}
+						<input type="checkbox" value="clicked" name="c{{item.id}}" checked>
+					{% else %}
+						<input type="checkbox" value="clicked" name="c{{item.id}}">
+					{% endif %}
+				</div>
+				<button type="submit" name="deleteItem" value="deleteItem" class="btn btn-success">Delete task</button>
+			</li>
+		</ul>
+		{% endfor %}
+		<br/>
+<h3 align="center">Add new task</h3>
+  		<textarea name="newt"  class="form-control" rows = "1"></textarea>
+  		<br/>
+  		<textarea name="new"  class="form-control" rows = "5"></textarea>
+  		<br/>
+	<div align="center">
+    	<button type="submit" name="newItem" value="newItem" class="btn btn-success">Add Task</button>
+		<br/>
+		<br/>
+		<button type="submit" name="save" value="save" class="btn btn-success">Save</button>
+	</div>
+</form>
+{% endblock %}

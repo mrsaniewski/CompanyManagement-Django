@@ -1,0 +1,44 @@
+{% extends 'main/base.html' %}
+
+{% block title %} Loyality program {% endblock %}
+
+{% block content %}
+<style xmlns:display="http://www.w3.org/1999/xhtml">
+  .bg-teal { background: orange; color:white;}
+  .bg-teal:focus { background: green; }
+  .title{font-weight: bold;}
+  .sayhi{font-weight: bold; font-size: 30px;}
+  .points{font-size: 25px;}
+  .complete{align: right;  white-space: nowrap ;}
+</style>
+<h1 class="sayhi">Hi, {{lsp.name}}</h1>
+<h2 class="points">Your points: {{lsp.points}}</h2>
+<h1 align="center">Prizes</h1>
+		{%csrf_token%}
+		{% for prize in lsp.prizes.all %}
+		<br/>
+		<ul class="list-group list-group-flush" id="prizes">
+			<li class="list-group-item">
+		    <div class = "title">
+				{{prize.prizename}}
+			</div>
+				<br/>
+				    <div align="right">
+			      <a class="points">Points: {{prize.value}}</a>
+				<br/>
+				<br/>
+				{% if not prize.claimed %}
+    <form method="post">
+      {% csrf_token %}
+		<button type="submit" name="claim_prize" value="{{ prize.id }}" class="btn btn-success">Claim prize</button>
+    </form>
+    {% else %}
+    <p>Claimed</p>
+    {% endif %}
+					</div>
+		<br/>
+		<br/>
+			</li>
+		</ul>
+		{% endfor %}
+{% endblock %}
